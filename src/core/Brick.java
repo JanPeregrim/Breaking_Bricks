@@ -1,8 +1,7 @@
 package core;
 
 public class Brick {
-    private BrickType  type = BrickType.R;
-
+    private BrickType  type ;
     public BrickType getType() {
         return type;
     }

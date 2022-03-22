@@ -74,6 +74,8 @@ public class ConsoleUI {
             if (line.startsWith("D")) {
                 field.destroyBrick(row, column);
             }
+            else
+                System.out.println("Wrong input, check command");
         }
         else
             System.out.println("Wrong input, check command");
