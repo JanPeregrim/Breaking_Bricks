@@ -4,7 +4,7 @@ import java.util.Random;
 public class Field {
     private GameState state = GameState.PLAYING;
 
-    private int score= 0;
+    private int score = 0;
 
     private int life = 5;
 
@@ -42,7 +42,21 @@ public class Field {
     private void generateType() {
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < columnCount; column++) {
-                var brick=getBrick(row,column);
+                var brick = getBrick(row, column);
+/*
+                    if((column==0 && row==0) ||(row==0 &&  column==1)){
+                        brick.setType(BrickType.B);
+                    }
+                    else if (column==0 && row ==1){
+                        brick.setType(BrickType.B);
+                    }
+                    else
+                        brick.setType(BrickType.R);
+
+
+
+ */
+
                 Random random = new Random();
                 int type = random.nextInt(10);
                 if (type < 3) {
@@ -52,63 +66,40 @@ public class Field {
                 } else {
                     brick.setType(BrickType.R);
                 }
+
+
             }
         }
-    }
-
-    public int getScore() {return score;}
-
-    public void setScore() {
-        this.score = score+50;
-    }
-
-
-    public GameState getState() {
-        return state;
-    }
-
-    public int getRowCount() {
-        return rowCount;
-    }
-
-    public int getColumnCount() {
-        return columnCount;
-    }
-
-    public int getLifeCount(){
-        return life;
-    }
-
-    public Brick getBrick(int row, int column) {
-        return bricks[row][column];
     }
 
     public void destroyBrick(int row, int column) {
         var brick = getBrick(row, column);
         BrickType type = brick.getType();
-        if(type!=BrickType.E){
-            aloneBrick(row,column,type);
-            destroyNeighbour(row,column,type);
+        if (type != BrickType.E) {
+            aloneBrick(row, column, type);
+            destroyNeighbour(row, column, type);
             seetleBricks();
         }
-        if(isSolved()) {
+        if (isSolved()) {
             generateType();
         }
-        if(isFailed()){
-            state=GameState.FAILED;
+        if (isFailed()) {
+            state = GameState.FAILED;
         }
     }
-    private boolean isFailed(){
-        if(getLifeCount()==0)
+
+    private boolean isFailed() {
+        if (getLifeCount() == 0)
             return true;
         else
             return false;
     }
+
     private boolean isSolved() {
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < columnCount; column++) {
-                var brick = getBrick(row,column);
-                if(brick.getType()!=BrickType.E)
+                var brick = getBrick(row, column);
+                if (brick.getType() != BrickType.E)
                     return false;
             }
         }
@@ -122,20 +113,20 @@ public class Field {
                 return false;
             }
         }
-        if (row >=1) {
-            var Brick = getBrick(row -1, column);
+        if (row >= 1) {
+            var Brick = getBrick(row - 1, column);
             if (type == Brick.getType()) {
                 return false;
             }
         }
         if (column < columnCount - 1) {
-            var downBrick = getBrick(row , column+1);
+            var downBrick = getBrick(row, column + 1);
             if (type == downBrick.getType()) {
                 return false;
             }
         }
         if (column >= 1) {
-            var downBrick = getBrick(row, column-1);
+            var downBrick = getBrick(row, column - 1);
             if (type == downBrick.getType()) {
                 return false;
             }
@@ -146,7 +137,7 @@ public class Field {
         return true;
     }
 
-    private void destroyNeighbour(int row,int column,BrickType type) {
+    private void destroyNeighbour(int row, int column, BrickType type) {
         setScore();
         if (row < rowCount - 1) {
             var downBrick = getBrick(row + 1, column);
@@ -169,54 +160,72 @@ public class Field {
                 destroyNeighbour(row, column - 1, type);
             }
         }
-        if (column < columnCount - 1){
+        if (column < columnCount - 1) {
             var rightBrick = getBrick(row, column + 1);
             if (type == rightBrick.getType()) {
-            rightBrick.setType(BrickType.E);
-            destroyNeighbour(row, column + 1, type);
+                rightBrick.setType(BrickType.E);
+                destroyNeighbour(row, column + 1, type);
             }
         }
     }
 
-    public void seetleBricks(){
+    public void seetleBricks() {
         //Seetle bricks down
-        int emptyRow=0 , emptyColumn=0;
+        int emptyRow = 0;
+
         for (int column = 0; column < columnCount; column++) {
-            for (int row = rowCount-1; row >= 0; row--) {
-                var brick=getBrick(row,column);
+            emptyRow=0;
+            for (int row = rowCount - 1; row >= 0; row--) {
+                var brick = getBrick(row, column);
                 BrickType type = brick.getType();
-                if(type==BrickType.E) {
-                    emptyColumn=column;
+                if(type==BrickType.E && row>0){
                     emptyRow=row;
-                }
-                if(row<rowCount-1) {
-                    if (type != BrickType.E && getBrick(row + 1, column).getType() == BrickType.E) {
-                        getBrick(emptyRow, emptyColumn).setType(type);
-                        getBrick(row, column).setType(BrickType.E);
-                        row=rowCount-1;
+                    while(getBrick(row-1,column).getType()==BrickType.E && row>1){
+                        row--;
                     }
                 }
-            }
-        }
-        // Settle bricks to left side
-        for (int row = 0; row < rowCount; row++) {
-            for (int column = columnCount-1; column >= 0; column--) {
-                var brick=getBrick(row,column);
-                BrickType type = brick.getType();
-                if(type==BrickType.E) {
-                    emptyColumn=column;
-                    emptyRow=row;
-                }
-                if(row<rowCount-1) {
-                    if (type != BrickType.E && getBrick(row + 1, column).getType() == BrickType.E) {
-                        getBrick(emptyRow, emptyColumn).setType(type);
-                        getBrick(row, column).setType(BrickType.E);
+                brick = getBrick(row, column);
+                type = brick.getType();
+
+                if(type!=BrickType.E && emptyRow!=0){
+                    getBrick(emptyRow,column).setType(type);
+                    brick.setType(BrickType.E);
+                    if(row==0)
+                        break;
+                    else
+                        emptyRow=0;
                         row=rowCount-1;
-                    }
                 }
             }
         }
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore() {
+        this.score = score + 50;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    public int getColumnCount() {
+        return columnCount;
+    }
+
+    public int getLifeCount() {
+        return life;
+    }
+
+    public Brick getBrick(int row, int column) {
+        return bricks[row][column];
+    }
 }
 

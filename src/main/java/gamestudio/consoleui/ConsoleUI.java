@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
+    public static final String ANSI_RED = "\u001B[41m";
+    public static final String ANSI_GREEN = "\u001B[42m";
+    public static final String ANSI_BLUE = "\u001B[44m";
+    public static final String ANSI_RESET = "\u001B[0m";
+
+
     public static final String GAME_NAME = "breaking bricks";
 
     private final Field field;
@@ -50,10 +56,24 @@ public class ConsoleUI {
             for (int column = 0; column < field.getColumnCount(); column++) {
                 var brick  = field.getBrick(row, column);
                 System.out.print(" ");
-                if(brick.getType()!= BrickType.E)
-                    System.out.print((brick.getType()));
+                if(brick.getType()!= BrickType.E) {
+                    switch (brick.getType()) {
+                        case B:
+                            //System.out.print("B");
+                            System.out.print(ANSI_BLUE+" "+ANSI_RESET);
+                            break;
+                        case G:
+                            //System.out.print("G");
+                            System.out.print(ANSI_GREEN+" "+ANSI_RESET);
+                            break;
+                        case R:
+                            //System.out.print("R");
+                           System.out.print(ANSI_RED+" "+ANSI_RESET);
+                            break;
+                    }
+                }
                 else
-                    System.out.print("-");
+                    System.out.print(" ");
 
             }
             System.out.println();
