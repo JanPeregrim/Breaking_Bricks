@@ -6,7 +6,7 @@ public class Field {
 
     private int score = 0;
 
-    private int life = 5;
+    private int lifeCount = 5;
 
     private final int rowCount;
 
@@ -16,9 +16,10 @@ public class Field {
 
     private static final Random rand = new Random();
 
-    public Field(int rowCount, int columnCount) {
+    public Field(int rowCount, int columnCount,int lifeCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
+        this.lifeCount=lifeCount;
         bricks = new Brick[rowCount][columnCount];
         generate();
     }
@@ -43,19 +44,6 @@ public class Field {
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < columnCount; column++) {
                 var brick = getBrick(row, column);
-/*
-                    if((column==0 && row==0) ||(row==0 &&  column==1)){
-                        brick.setType(BrickType.B);
-                    }
-                    else if (column==0 && row ==1){
-                        brick.setType(BrickType.B);
-                    }
-                    else
-                        brick.setType(BrickType.R);
-
-
-
- */
 
                 Random random = new Random();
                 int type = random.nextInt(10);
@@ -133,7 +121,7 @@ public class Field {
         }
         var brick = getBrick(row, column);
         brick.setType(BrickType.E);
-        life--;
+        lifeCount--;
         return true;
     }
 
@@ -221,7 +209,7 @@ public class Field {
     }
 
     public int getLifeCount() {
-        return life;
+        return lifeCount;
     }
 
     public Brick getBrick(int row, int column) {
