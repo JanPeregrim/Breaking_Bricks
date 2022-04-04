@@ -6,7 +6,7 @@ public class Field {
 
     private int score = 0;
 
-    private int lifeCount = 5;
+    private int lifeCount ;
 
     private final int rowCount;
 
