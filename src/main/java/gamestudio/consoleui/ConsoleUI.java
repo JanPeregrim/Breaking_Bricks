@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
     public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
@@ -46,12 +47,15 @@ public class ConsoleUI {
     }
 
     private void printGameSettings() {
-        System.out.println(ANSI_RED +"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+ANSI_RESET);
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX BRICKS BREAKING XXXXXXXXXXXXXXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXX Please select difficulty for your game XXXXXXXXXXXXX");
-        System.out.println("XXXXXXXXXXXXXXXXXX type E-easy,M-medium,H-hard XXXXXXXXXXXXXXXXXXXX");
-        System.out.println(ANSI_RED+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"+ANSI_RESET);
-
+        for(int i=0;i<5;i++) {
+            System.out.println(ANSI_BLUE + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        }
+        System.out.println(ANSI_BLUE+"XXXXXXXXXXXXXXXXXXXXXXXXX BRICKS BREAKING XXXXXXXXXXXXXXXXXXXXXXXXX");
+        System.out.println("XXXXXXXXXXXXXX Please select difficulty for your game XXXXXXXXXXXXX"+ANSI_RESET);
+        System.out.println(ANSI_YELLOW+"XXXXXXXXXXXXXXXXXX type E-easy,M-medium,H-hard XXXXXXXXXXXXXXXXXXXX");
+        for(int i=0;i<5;i++) {
+            System.out.println(ANSI_YELLOW+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" + ANSI_RESET);
+        }
         var line =scanner.nextLine();
         if(line.startsWith("E")) {
             field = new Field(6, 6,10);
@@ -63,9 +67,7 @@ public class ConsoleUI {
              field = new Field(9, 35,5);
         }
         else
-            return ;
-
-
+            return;
     }
 
         private void setPlayerName() {

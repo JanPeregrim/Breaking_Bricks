@@ -66,7 +66,8 @@ public class Field {
         if (type != BrickType.E) {
             aloneBrick(row, column, type);
             destroyNeighbour(row, column, type);
-            seetleBricks();
+            settleBricksDown();
+            settleBricksToLeft();
         }
         if (isSolved()) {
             generateType();
@@ -121,17 +122,18 @@ public class Field {
         }
         var brick = getBrick(row, column);
         brick.setType(BrickType.E);
+        setScore();
         lifeCount--;
         return true;
     }
 
     private void destroyNeighbour(int row, int column, BrickType type) {
-        setScore();
         if (row < rowCount - 1) {
             var downBrick = getBrick(row + 1, column);
             if (type == downBrick.getType()) {
                 downBrick.setType(BrickType.E);
                 destroyNeighbour(row + 1, column, type);
+                setScore();
             }
         }
         if (row >= 1) {
@@ -139,6 +141,7 @@ public class Field {
             if (type == upBrick.getType()) {
                 upBrick.setType(BrickType.E);
                 destroyNeighbour(row - 1, column, type);
+                setScore();
             }
         }
         if (column >= 1) {
@@ -146,6 +149,7 @@ public class Field {
             if (type == leftBrick.getType()) {
                 leftBrick.setType(BrickType.E);
                 destroyNeighbour(row, column - 1, type);
+                setScore();
             }
         }
         if (column < columnCount - 1) {
@@ -153,11 +157,12 @@ public class Field {
             if (type == rightBrick.getType()) {
                 rightBrick.setType(BrickType.E);
                 destroyNeighbour(row, column + 1, type);
+                setScore();
             }
         }
     }
 
-    public void seetleBricks() {
+    public void settleBricksDown() {
         //Seetle bricks down
         int emptyRow = 0;
 
@@ -187,6 +192,24 @@ public class Field {
             }
         }
     }
+
+    private void settleBricksToLeft(){
+        int lastRow=rowCount-1;
+        for(int column=0;column<columnCount;column++){
+            var brick=getBrick(lastRow,column);
+            BrickType type=brick.getType();
+            if(type==BrickType.E && column<columnCount-1){
+                for(int row=0;row<rowCount;row++){
+                    brick=getBrick(row,column+1);
+                    type=brick.getType();
+                    getBrick(row,column).setType(type);
+                    getBrick(row,column+1).setType(BrickType.E);
+                }
+            }
+        }
+
+    }
+
 
     public int getScore() {
         return score;
