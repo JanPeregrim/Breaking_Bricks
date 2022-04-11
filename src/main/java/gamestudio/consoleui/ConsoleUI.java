@@ -3,7 +3,10 @@ package gamestudio.consoleui;
 import gamestudio.core.BrickType;
 import gamestudio.core.GameState;
 import gamestudio.core.Field;
+import gamestudio.entity.Comment;
 import gamestudio.entity.Score;
+import gamestudio.service.CommentService;
+import gamestudio.service.CommentServiceJDBC;
 import gamestudio.service.ScoreService;
 import gamestudio.service.ScoreServiceJDBC;
 
@@ -20,6 +23,7 @@ public class ConsoleUI {
     public static final String ANSI_RESET = "\u001B[0m";
 
     private ScoreService scoreService = new ScoreServiceJDBC();
+    private CommentService commentService = new CommentServiceJDBC();
 
     public static final String GAME_NAME = "breaking bricks";
 
@@ -32,6 +36,7 @@ public class ConsoleUI {
 
     public void play(){
         printGameSettings();
+        printTopScores();
         do {
             printField();
             processInput();
@@ -41,6 +46,7 @@ public class ConsoleUI {
 
         if(field.getState()==GameState.FAILED) {
             setPlayerName();
+            printTopScores();
             return;
         }
 
@@ -64,7 +70,7 @@ public class ConsoleUI {
              field = new Field(9, 9,7);
         }
         else if(line.startsWith("H")) {
-             field = new Field(9, 35,5);
+             field = new Field(9, 35,1);
         }
         else
             return;
@@ -72,13 +78,32 @@ public class ConsoleUI {
 
         private void setPlayerName() {
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXX GAME FAILED! XXXXXXXXXXXXXXXXXXXXXXX");
-        System.out.print("XXXXXXXXXXXXXXXXXXXX Please Select your name XXXXXXXXXXXXXXXXX");
+        System.out.println("XXXXXXXXXXXXXXXXXXXX Please Select your name XXXXXXXXXXXXXXXXX");
         var name =scanner.nextLine();
         scoreService.addScore(new Score(name, "breaking bricks", field.getScore(), new Date()));
+        System.out.print("Do you want write some comment ? [Y/N]  ");
+        var answer =scanner.nextLine();
+        if(answer.charAt(0) =='Y'){
+            System.out.print("Please write your comment  ");
+            var comment =scanner.nextLine();
+            commentService.addComment(new Comment(name,"breaking bricks",comment,new Date()));
+        }
+        printComment();
+    }
+
+    private void printComment(){
+        System.out.print("\n                        NEWEST COMMENTS \n");
+        System.out.printf("-----------------------------------------------------------\n");
+        List<Comment> comments = commentService.getComments(GAME_NAME);
+
+        for(int firstFive=0;firstFive<5;firstFive++) {
+            var comment = comments.get(firstFive);
+            System.out.printf("%s        %s     %s \n",comment.getPlayer(),comment.getPlayedAt(),comment.getComment());
+        }
+        System.out.printf("-----------------------------------------------------------\n");
     }
 
     private void printField() {
-        printTopScores();
         printFieldHeading();
         printFieldAndNumbers();
     }
@@ -156,6 +181,7 @@ public class ConsoleUI {
     }
 
     private void printTopScores() {
+        System.out.print("\n                         TOP 5 SCORES \n");
         System.out.printf("-----------------------------------------------------------\n");
         List<Score> scores = scoreService.getTopScores(GAME_NAME);
 

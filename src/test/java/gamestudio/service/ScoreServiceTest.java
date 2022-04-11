@@ -1,6 +1,6 @@
 package gamestudio.service;
 
-import org.junit.Assert;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,7 +14,7 @@ public class ScoreServiceTest {
     @Test
     public void testReset() {
         scoreService.reset();
-        assertEquals(0, scoreService.getTopScores("Marian").size());
+        assertEquals(0, scoreService.getTopScores("").size());
     }
 
     @Test
@@ -36,28 +36,29 @@ public class ScoreServiceTest {
     public void testGetTopScores() {
         scoreService.reset();
         var date = new Date();
-        scoreService.addScore(new Score("mines", "breaking bricks", 120, date));
-        scoreService.addScore(new Score("mines", "breaking bricks", 150, date));
-        scoreService.addScore(new Score("tiles", "breaking bricks", 180, date));
-        scoreService.addScore(new Score("mines", "breaking bricks", 100, date));
+        scoreService.addScore(new Score("Katka", "breaking bricks", 120, date));
+        scoreService.addScore(new Score("Jaro", "breaking bricks", 150, date));
+        scoreService.addScore(new Score("Jaro", "breaking bricks", 180, date));
+        scoreService.addScore(new Score("Miro", "breaking bricks", 80, date));
+        scoreService.addScore(new Score("Jakub", "breaking bricks", 90, date));
 
         var scores = scoreService.getTopScores("breaking bricks");
 
-        assertEquals(3, scores.size());
+        assertEquals(5, scores.size());
 
-        assertEquals("mines", scores.get(0).getGame());
-        assertEquals("Katka", scores.get(0).getPlayer());
-        assertEquals(150, scores.get(0).getPoints());
+        assertEquals("breaking bricks", scores.get(0).getGame());
+        assertEquals("Jaro", scores.get(0).getPlayer());
+        assertEquals(180, scores.get(0).getPoints());
         assertEquals(date, scores.get(0).getPlayedAt());
 
-        assertEquals("mines", scores.get(1).getGame());
+        assertEquals("breaking bricks", scores.get(1).getGame());
         assertEquals("Jaro", scores.get(1).getPlayer());
-        assertEquals(120, scores.get(1).getPoints());
+        assertEquals(150, scores.get(1).getPoints());
         assertEquals(date, scores.get(1).getPlayedAt());
 
-        assertEquals("", scores.get(2).getGame());
-        assertEquals("Jaro", scores.get(2).getPlayer());
-        assertEquals(100, scores.get(2).getPoints());
+        assertEquals("breaking bricks", scores.get(2).getGame());
+        assertEquals("Katka", scores.get(2).getPlayer());
+        assertEquals(120, scores.get(2).getPoints());
         assertEquals(date, scores.get(2).getPlayedAt());
     }
 }

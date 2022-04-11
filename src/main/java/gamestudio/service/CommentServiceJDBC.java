@@ -13,8 +13,7 @@ public class CommentServiceJDBC implements CommentService {
     public static final String JDBC_USER = "postgres";
     public static final String JDBC_PASSWORD = "admin";
     public static final String INSERT_STATEMENT = "INSERT INTO comment (player, game, comment, played_at) VALUES (?, ?, ?, ?)";
-    public static final String SELECT_STATEMENT = "SELECT player, game, points, played_at FROM score WHERE game = ? ORDER BY comment DESC LIMIT 10";
-
+    public static final String SELECT_STATEMENT = "SELECT player, game, comment, played_at FROM comment WHERE game = ? ORDER BY played_at DESC LIMIT 10";
     public static final String DELETE_STATEMENT = "DELETE FROM comment";
 
     @Override
@@ -39,11 +38,11 @@ public class CommentServiceJDBC implements CommentService {
         ) {
             statement.setString(1, game);
             try (var rs = statement.executeQuery()) {
-                var scores = new ArrayList<Comment>();
+                var comments = new ArrayList<Comment>();
                 while (rs.next()) {
-                    scores.add(new Comment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4)));
+                    comments.add(new Comment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4)));
                 }
-                return scores;
+                return comments;
             }
         } catch (SQLException e) {
             throw new GameStudioException(e);
