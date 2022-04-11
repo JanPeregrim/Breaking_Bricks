@@ -8,7 +8,7 @@ import gamestudio.entity.Score;
 import gamestudio.service.CommentService;
 import gamestudio.service.CommentServiceJDBC;
 import gamestudio.service.ScoreService;
-import gamestudio.service.ScoreServiceJDBC;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -22,7 +22,9 @@ public class ConsoleUI {
     public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
     public static final String ANSI_RESET = "\u001B[0m";
 
-    private ScoreService scoreService = new ScoreServiceJDBC();
+    @Autowired
+    private ScoreService scoreService;
+
     private CommentService commentService = new CommentServiceJDBC();
 
     public static final String GAME_NAME = "breaking bricks";
@@ -96,8 +98,8 @@ public class ConsoleUI {
         System.out.printf("-----------------------------------------------------------\n");
         List<Comment> comments = commentService.getComments(GAME_NAME);
 
-        for(int firstFive=0;firstFive<5;firstFive++) {
-            var comment = comments.get(firstFive);
+        for(int firstTen = 0; firstTen <comments.size() && firstTen<10; firstTen++) {
+            var comment = comments.get(firstTen);
             System.out.printf("%s        %s     %s \n",comment.getPlayer(),comment.getPlayedAt(),comment.getComment());
         }
         System.out.printf("-----------------------------------------------------------\n");
@@ -185,7 +187,7 @@ public class ConsoleUI {
         System.out.printf("-----------------------------------------------------------\n");
         List<Score> scores = scoreService.getTopScores(GAME_NAME);
 
-        for(int topFive=0;topFive<5;topFive++) {
+        for(int topFive=0;topFive< scores.size() && topFive<5;topFive++) {
             var score = scores.get(topFive);
             System.out.printf("%d        %s \n",score.getPoints(),score.getPlayer());
         }

@@ -1,8 +1,16 @@
 package gamestudio.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Score {
+    @Id
+    @GeneratedValue
+    private int ident;
+
     private String player;
 
     private String game;
@@ -11,12 +19,17 @@ public class Score {
 
     private Date playedAt;
 
+    public Score() {
+    }
+
     public Score(String player, String game, int points, Date playedAt) {
         this.player = player;
         this.game = game;
         this.points = points;
         this.playedAt = playedAt;
     }
+
+
 
     public String getPlayer() {
         return player;
