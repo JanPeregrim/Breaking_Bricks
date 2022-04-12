@@ -1,26 +1,26 @@
 package gamestudio.service;
 
-import gamestudio.entity.Comment;
+import gamestudio.entity.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class CommentServiceRestClient implements CommentService {
-    private String url = "http://localhost:8080/api/comment";
+public class RatingServiceRestClient implements RatingService {
+    private String url = "http://localhost:8080/api/rating";
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Override
-    public void addComment(Comment comment) {
-        restTemplate.postForEntity(url, comment, Comment.class);
+    public void addRating(Rating rating) {
+        restTemplate.postForEntity(url, rating, Rating.class);
     }
 
     @Override
-    public List<Comment> getComments(String game) {
-        return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Comment[].class).getBody());
+    public List<Rating> getRatings(String game) {
+        return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Rating[].class).getBody());
     }
 
     @Override

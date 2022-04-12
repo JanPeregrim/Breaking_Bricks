@@ -4,10 +4,9 @@ import gamestudio.core.BrickType;
 import gamestudio.core.GameState;
 import gamestudio.core.Field;
 import gamestudio.entity.Comment;
+import gamestudio.entity.Rating;
 import gamestudio.entity.Score;
-import gamestudio.service.CommentService;
-import gamestudio.service.CommentServiceJDBC;
-import gamestudio.service.ScoreService;
+import gamestudio.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -25,7 +24,9 @@ public class ConsoleUI {
     @Autowired
     private ScoreService scoreService;
 
-    private CommentService commentService = new CommentServiceJDBC();
+    private CommentService commentService= new CommentServiceJDBC();
+
+    private RatingService ratingService = new RatingServiceJDBC();
 
     public static final String GAME_NAME = "breaking bricks";
 
@@ -37,6 +38,7 @@ public class ConsoleUI {
     }
 
     public void play(){
+        //ratingService.addRating(new Rating("Milan", "breaking bricks", 1, new Date()));
         printGameSettings();
         printTopScores();
         do {
@@ -55,6 +57,7 @@ public class ConsoleUI {
     }
 
     private void printGameSettings() {
+
         for(int i=0;i<5;i++) {
             System.out.println(ANSI_BLUE + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         }

@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class TestJDBC {
     public static void main(String[] args) throws Exception {
-
+/*
         ScoreService service = new ScoreServiceJDBC();
         service.reset();
 
@@ -25,7 +25,9 @@ public class TestJDBC {
 
         var scores = service.getTopScores("breaking bricks");
 
-        /*
+
+ */
+
         CommentService service = new CommentServiceJDBC();
 
         service.addComment(new Comment("jaro", "breaking bricks", "jodasjidasgf", new Date()));
@@ -33,7 +35,7 @@ public class TestJDBC {
         service.addComment(new Comment("moro bricks", "breaking bricks", "dsadsa", new Date()));
         service.addComment(new Comment("rasto ", "breaking bricks", "sadsa", new Date()));
         service.addComment(new Comment("br bricks", "breaking bricks", "fndsjfnd", new Date()));
-        */
+
 
 
        // var comment = service.getComments("breaking bricks");

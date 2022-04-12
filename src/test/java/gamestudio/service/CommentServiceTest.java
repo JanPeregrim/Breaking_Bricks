@@ -1,6 +1,5 @@
 package gamestudio.service;
 
-import gamestudio.entity.Score;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

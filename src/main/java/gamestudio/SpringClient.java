@@ -1,10 +1,7 @@
 package gamestudio;
 
 import gamestudio.consoleui.ConsoleUI;
-import gamestudio.service.ScoreService;
-import gamestudio.service.ScoreServiceJDBC;
-import gamestudio.service.ScoreServiceJPA;
-import gamestudio.service.ScoreServiceRestClient;
+import gamestudio.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -40,6 +37,16 @@ public class SpringClient {
     @Bean
     public ScoreService scoreService(){
         return new ScoreServiceRestClient();
+    }
+
+    @Bean
+    public CommentService commentService(){
+        return new CommentServiceRestClient();
+    }
+
+    @Bean
+    public RatingService ratingService(){
+        return new RatingServiceRestClient();
     }
 
     @Bean

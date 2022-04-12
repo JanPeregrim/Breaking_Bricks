@@ -1,12 +1,12 @@
 package gamestudio.server;
 
+import gamestudio.entity.Rating;
+import gamestudio.service.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import gamestudio.service.ScoreService;
-import gamestudio.service.ScoreServiceJPA;
 
 @SpringBootApplication
 @Configuration
@@ -20,5 +20,17 @@ public class GameStudioServer {
     public ScoreService scoreService() {
         return new ScoreServiceJPA();
     }
+
+    @Bean
+    public CommentService commentService() {
+        return new CommentServiceJPA();
+    }
+
+    @Bean
+    public RatingService ratingService() {
+        return new RatingServiceJPA();
+    }
+
 }
+
 

@@ -6,26 +6,28 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Comment {
+public class Rating {
     @Id
     @GeneratedValue
     private String player;
 
     private String game;
 
-    private String comment;
+    private int stars;
 
     private Date playedAt;
 
-    public Comment(String player, String game, String comment, Date playedAt) {
+    public Rating() {
+    }
+
+    public Rating(String player, String game, int stars, Date playedAt) {
         this.player = player;
         this.game = game;
-        this.comment = comment;
+        this.stars = stars;
         this.playedAt = playedAt;
     }
 
-    public Comment() {
-    }
+
 
     public String getPlayer() {
         return player;
@@ -43,12 +45,12 @@ public class Comment {
         this.game = game;
     }
 
-    public String getComment() {
-        return comment;
+    public int getStars() {
+        return stars;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setStars(int stars) {
+        this.stars = stars;
     }
 
     public Date getPlayedAt() {
@@ -64,7 +66,7 @@ public class Comment {
         return "Score{" +
                 "player='" + player + '\'' +
                 ", game='" + game + '\'' +
-                ", comment='" + comment + '\'' +
+                ", stars=" + stars +
                 ", playedAt=" + playedAt +
                 '}';
     }
