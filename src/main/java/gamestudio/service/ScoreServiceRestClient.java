@@ -1,2 +1,30 @@
-package gamestudio.service;public class ScoreServiceRestClient {
+package gamestudio.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
+import gamestudio.entity.Score;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class ScoreServiceRestClient implements ScoreService {
+    private String url = "http://localhost:8080/api/score";
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Override
+    public void addScore(Score score) {
+        restTemplate.postForEntity(url, score, Score.class);
+    }
+
+    @Override
+    public List<Score> getTopScores(String game) {
+        return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Score[].class).getBody());
+    }
+
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Reset is not supported on eb interface");
+    }
 }
