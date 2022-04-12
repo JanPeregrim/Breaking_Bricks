@@ -38,7 +38,6 @@ public class ConsoleUI {
     }
 
     public void play(){
-        //ratingService.addRating(new Rating("Milan", "breaking bricks", 1, new Date()));
         printGameSettings();
         printTopScores();
         do {
@@ -86,7 +85,13 @@ public class ConsoleUI {
         System.out.println("XXXXXXXXXXXXXXXXXXXX Please Select your name XXXXXXXXXXXXXXXXX");
         var name =scanner.nextLine();
         scoreService.addScore(new Score(name, "breaking bricks", field.getScore(), new Date()));
-        System.out.print("Do you want write some comment ? [Y/N]  ");
+            System.out.print("Please rate our game (1-5) :");
+            var rate=scanner.nextLine();
+            if(rate.charAt(0)>='1' || rate.charAt(0)<='5'){
+                int stars = rate.charAt(0)-'0';
+                ratingService.addRating(new Rating(name, "breaking bricks", stars, new Date()));
+            }
+            System.out.print("Do you want write some comment ? [Y/N]  ");
         var answer =scanner.nextLine();
         if(answer.charAt(0) =='Y'){
             System.out.print("Please write your comment  ");
@@ -94,6 +99,20 @@ public class ConsoleUI {
             commentService.addComment(new Comment(name,"breaking bricks",comment,new Date()));
         }
         printComment();
+        printRating();
+    }
+
+    private void printRating() {
+        System.out.print("\n                        NEWEST RATINGS \n");
+        System.out.printf("-----------------------------------------------------------\n");
+        List<Rating> ratings = ratingService.getRatings(GAME_NAME);
+
+        for(int firstTen = 0; firstTen <ratings.size() && firstTen<10; firstTen++) {
+            var rating = ratings.get(firstTen);
+            System.out.printf("%s        %s     %s \n",rating.getPlayedAt(),rating.getStars(),rating.getPlayer());
+        }
+        System.out.printf("-----------------------------------------------------------\n");
+
     }
 
     private void printComment(){
@@ -101,9 +120,9 @@ public class ConsoleUI {
         System.out.printf("-----------------------------------------------------------\n");
         List<Comment> comments = commentService.getComments(GAME_NAME);
 
-        for(int firstTen = 0; firstTen <comments.size() && firstTen<10; firstTen++) {
+        for(int firstTen = 0; firstTen <comments.size() && firstTen<6; firstTen++) {
             var comment = comments.get(firstTen);
-            System.out.printf("%s        %s     %s \n",comment.getPlayer(),comment.getPlayedAt(),comment.getComment());
+            System.out.printf("%s        %s     %s \n",comment.getPlayedAt(),comment.getPlayer(),comment.getComment());
         }
         System.out.printf("-----------------------------------------------------------\n");
     }
