@@ -9,6 +9,8 @@ import java.util.Date;
 public class Comment {
     @Id
     @GeneratedValue
+    private int ident;
+
     private String player;
 
     private String game;

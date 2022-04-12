@@ -24,9 +24,11 @@ public class ConsoleUI {
     @Autowired
     private ScoreService scoreService;
 
-    private CommentService commentService= new CommentServiceJDBC();
+    @Autowired
+    private CommentService commentService;
 
-    private RatingService ratingService = new RatingServiceJDBC();
+    @Autowired
+    private RatingService ratingService;
 
     public static final String GAME_NAME = "breaking bricks";
 
