@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class CommentServiceTest {
 
-        private CommentService commentService = new CommentServiceJDBC();
+        private CommentService commentService = new CommentServiceJPA();
 
         @Test
         public void testReset() {
