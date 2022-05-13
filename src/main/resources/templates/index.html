@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gamestudio</title>
+    <link rel="stylesheet" href="/css/stylesheet.css"/>
+</head>
+<body>
+
+<h1>WELCOME ON GAMESTUDIO SERVER !!</h1></br>
+<ul>
+    <li style="text-align:center;"><a href="/breakingBricks">Breaking Bricks</a></li>
+</ul>
+
+<span th:if="${@userController.logged}">
+        Logged as: <span th:text="${@userController.loggedUser.login}"/><br/>
+        <a href="/logout">Logout</a><br/>
+    </span>
+<p1>
+<span th:if="not ${@userController.logged}">
+        <form action="/login" method="post">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login:&nbsp; <input type="text" name="login"/><br/>
+            Password: <input type="password" name="password"/><br/>
+            <input type="submit"/>
+        </form>
+    </span>
+</p1>
+
+<div th:replace="fragments::footer"/>
+
+</body>
+</html>

@@ -23,6 +23,9 @@ public class RatingServiceRestClient implements RatingService {
         return Arrays.asList(restTemplate.getForEntity(url + "/" + game, Rating[].class).getBody());
     }
 
+    public double getAverageRating(String game){
+        return 0.2;
+    }
     @Override
     public void reset() {
         throw new UnsupportedOperationException("Reset is not supported on eb interface");

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class RatingServiceJDBC implements RatingService {
 
     public static final String JDBC_URL = "jdbc:postgresql://localhost/gamestudio";
@@ -60,3 +60,5 @@ public class RatingServiceJDBC implements RatingService {
         }
     }
 }
+
+ */

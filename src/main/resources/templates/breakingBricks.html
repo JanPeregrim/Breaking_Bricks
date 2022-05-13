@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Gamestudio</title>
@@ -7,11 +7,78 @@
 </head>
 <body>
 
-<h1>BREAKING BRICKS</h1>
+<h1>BREAKING BRICKS</h1></br>
 
-<a href="/breakingBricks/new">New game</a><br>
+<div th:replace="fragments::header"/>
 
-<span th:utext="${@breakingBricksController.getHtmlField()}"></span>
+<a>New game: </a>
+<a href="/breakingBricks/new/Easy">&nbsp;Easy</a>
+<a href="/breakingBricks/new/Medium">&nbsp;&nbsp;Medium</a>
+<a href="/breakingBricks/new/Hard">&nbsp;&nbsp;Hard</a></br>
+
+Your Score: <span th:utext="${@breakingBricksController.getCurrentScore()}"></span></br>
+Your Life Count: <span th:utext="${@breakingBricksController.getLifeCount()}"></span>
+
+
+<span th:utext="${@breakingBricksController.getHtmlField()}"></span></br>
+
+<h2>Top scores</h2>
+<table class="scores">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>&nbsp;Player</th>
+        <th>&nbsp;Points</th>
+        <th>Played at</th>
+    </tr>
+    </thead>
+    <!--/*@thymesVar id="scores" type="java.util.List<gamestudio.entity.Score>"*/-->
+    <tr th:each="score, it : ${scores}">
+        <td th:text="${it.index + 1}" style="text-align: center"/>
+        <td th:text="${score.player}"style="text-align: center"/>
+        <td th:text="${score.points}"style="text-align: center"/>
+        <td th:text="${#dates.format(score.playedAt, 'dd.MM.yyyy HH:mm')}"/>
+    </tr>
+</table>
+
+</br>
+<h2>NEWEST COMMENTS</h2>
+<table class="comments">
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>&nbsp;Player</th>
+        <th>&nbsp;Comment</th>
+        <th>Played at</th>
+    </tr>
+    </thead>
+    <!--/*@thymesVar id="comments" type="java.util.List<gamestudio.entity.Comment>"*/-->
+    <tr th:each="comment, it : ${comments}">
+        <td th:text="${it.index + 1}" style="text-align: center"/>
+        <td th:text="${comment.player}"style="text-align: center"/>
+        <td th:text="${comment.comment}"style="text-align: center"/>
+        <td th:text="${#dates.format(comment.playedAt, 'dd.MM.yyyy HH:mm')}"/>
+    </tr>
+</table>
+</br>
+<h2>AVERAGE RATINGS IS</h2>
+<span th:utext="${@breakingBricksController.averageRatingAtBrowser()}"></span>
+
+
+<span th:if="${@userController.logged}">
+        <form action="/addComment" method="post">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Comment: <input type="text" name="comment"/>
+            <input type="submit"/></br>
+        </form>
+            <form action="/addRating" method="post">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Rating(1-5): <input type="number" id="rating" name="rating" min="1" max="5"/>
+            <input type="submit"/>
+        </form>
+    </span>
+
+
+<div th:replace="fragments::footer"/>
+
 
 </body>
 </html>

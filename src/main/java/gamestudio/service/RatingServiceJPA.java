@@ -26,6 +26,12 @@ public class RatingServiceJPA implements RatingService{
                 .getResultList();
 
     }
+    @Override
+    public double getAverageRating(String game) {
+            return (double) entityManager.createQuery("SELECT AVG(s.stars) from Rating s where s.game = :game")
+                    .setParameter("game", game)
+                    .getSingleResult();
+    }
 
 
     @Override

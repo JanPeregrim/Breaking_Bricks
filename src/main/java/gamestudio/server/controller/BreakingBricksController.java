@@ -2,12 +2,19 @@ package gamestudio.server.controller;
 
 
 import gamestudio.core.Brick;
+import gamestudio.core.GameState;
+import gamestudio.entity.Comment;
+import gamestudio.entity.Score;
+import gamestudio.service.CommentService;
+import gamestudio.service.RatingService;
+import gamestudio.service.ScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import gamestudio.core.Field;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.context.annotation.Scope;
-
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
@@ -18,26 +25,68 @@ import java.util.Date;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class BreakingBricksController {
 
-    private Field field = new Field(0, 0, 1);
+    @Autowired
+    private UserController userController;
+    @Autowired
+    private ScoreService scoreService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private RatingService ratingService;
+    public static final String GAME_NAME = "Breaking Bricks";
+    private Field field = new Field(0, 0, 0);
 
     @RequestMapping
-    public String breakingBricks(@RequestParam(required = false) Integer row,@RequestParam(required = false) Integer column){
-        if(row!=null && column!=null){
-            field.destroyBrick(row,column);
+    public String breakingBricks(@RequestParam(required = false) Integer row,@RequestParam(required = false) Integer column,Model model) {
+        if (field.getState() == GameState.PLAYING) {
+            if (row != null && column != null) {
+                field.destroyBrick(row, column);
+
+            }
+            if (field.getState() == GameState.FAILED && userController.isLogged()){
+                scoreService.addScore(new Score(userController.getLoggedUser().getLogin(),GAME_NAME, field.getScore(), new Date()));
+            }
+            scoreModel(model);
+            commentModel(model);
+            //ratingModel(model);
+        }
+        else {
+            scoreModel(model);
+            commentModel(model);
+            //ratingModel(model);
         }
         return "breakingBricks";
     }
 
-    @RequestMapping("/new")
-    public String newGame(){
-        field=new Field(9,9,1);
+    @RequestMapping("/new/Easy")
+    public String newGameEasy(Model model){
+        field=new Field(6,4,6);
+        scoreModel(model);
+        commentModel(model);
+        return "breakingBricks";
+    }
+    @RequestMapping("/new/Medium")
+    public String newGameMedium(Model model){
+        field=new Field(10,10,5);
+        scoreModel(model);
+        commentModel(model);
+        return "breakingBricks";
+    }
+    @RequestMapping("/new/Hard")
+    public String newGameHard(Model model){
+        field=new Field(20,45,3);
+        scoreModel(model);
+        commentModel(model);
         return "breakingBricks";
     }
 
-    public String geCurrentTime(){
-        return new Date().toString();
+    public int getCurrentScore(){
+        return field.getScore();
     }
 
+    public int getLifeCount(){
+        return field.getLifeCount();
+    }
 
     public String getHtmlField() {
         StringBuilder sb = new StringBuilder();
@@ -69,4 +118,20 @@ public class BreakingBricksController {
         }
         return "empty";
     }
+    private void scoreModel(Model model) {
+        model.addAttribute("scores", scoreService.getTopScores(GAME_NAME));
+    }
+    private void commentModel(Model model) {
+        model.addAttribute("comments", commentService.getComments(GAME_NAME));
+    }
+
+    public double averageRatingAtBrowser(){
+        return ratingService.getAverageRating(GAME_NAME);
+    }
+
+    /*
+    private void ratingModel(Model model) {
+        model.addAttribute("rating", ratingService.getAverageRating(GAME_NAME));
+    }
+    */
 }

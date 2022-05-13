@@ -30,7 +30,7 @@ public class ConsoleUI {
     @Autowired
     private RatingService ratingService;
 
-    public static final String GAME_NAME = "breaking bricks";
+    public static final String GAME_NAME = "Breaking Bricks";
 
     private  Field field;
 
@@ -42,6 +42,7 @@ public class ConsoleUI {
     public void play(){
         printGameSettings();
         printTopScores();
+
         do {
             printField();
             processInput();
@@ -58,6 +59,7 @@ public class ConsoleUI {
     }
 
     private void printGameSettings() {
+
 
         for(int i=0;i<5;i++) {
             System.out.println(ANSI_BLUE + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -86,19 +88,19 @@ public class ConsoleUI {
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXX GAME FAILED! XXXXXXXXXXXXXXXXXXXXXXX");
         System.out.println("XXXXXXXXXXXXXXXXXXXX Please Select your name XXXXXXXXXXXXXXXXX");
         var name =scanner.nextLine();
-        scoreService.addScore(new Score(name, "breaking bricks", field.getScore(), new Date()));
+        scoreService.addScore(new Score(name, GAME_NAME, field.getScore(), new Date()));
             System.out.print("Please rate our game (1-5) :");
             var rate=scanner.nextLine();
             if(rate.charAt(0)>='1' || rate.charAt(0)<='5'){
                 int stars = rate.charAt(0)-'0';
-                ratingService.addRating(new Rating(name, "breaking bricks", stars, new Date()));
+                ratingService.addRating(new Rating(name, GAME_NAME, stars, new Date()));
             }
             System.out.print("Do you want write some comment ? [Y/N]  ");
         var answer =scanner.nextLine();
         if(answer.charAt(0) =='Y'){
             System.out.print("Please write your comment  ");
             var comment =scanner.nextLine();
-            commentService.addComment(new Comment(name,"breaking bricks",comment,new Date()));
+            commentService.addComment(new Comment(name,GAME_NAME,comment,new Date()));
         }
         printComment();
         printRating();
