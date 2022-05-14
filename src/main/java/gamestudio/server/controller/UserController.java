@@ -55,7 +55,7 @@ public class UserController {
         return "redirect:/breakingBricks";
     }
 
-        public User getLoggedUser() {
+    public User getLoggedUser() {
         return loggedUser;
     }
 

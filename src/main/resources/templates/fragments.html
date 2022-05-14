@@ -3,7 +3,6 @@
 <!--/*@thymesVar id="userController" type="gamestudio.server.controller.UserController"*/-->
 
 <div th:fragment="header">
-
     <span th:if="${@userController.logged}">
         Logged as: <span th:text="${@userController.loggedUser.login}"/>
         <a href="/logout">Logout</a><br/>

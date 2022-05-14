@@ -10,7 +10,6 @@
 <h1>BREAKING BRICKS</h1></br>
 
 <div th:replace="fragments::header"/>
-
 <a>New game: </a>
 <a href="/breakingBricks/new/Easy">&nbsp;Easy</a>
 <a href="/breakingBricks/new/Medium">&nbsp;&nbsp;Medium</a>
@@ -21,6 +20,11 @@ Your Life Count: <span th:utext="${@breakingBricksController.getLifeCount()}"></
 
 
 <span th:utext="${@breakingBricksController.getHtmlField()}"></span></br>
+
+<span th:if="${@breakingBricksController.getFailedGame()}">
+        <h2>Game Failed !</h2>
+    <span th:utext="${@breakingBricksController.getGif()}"></span></br>
+    </span>
 
 <h2>Top scores</h2>
 <table class="scores">

@@ -46,14 +46,13 @@ public class BreakingBricksController {
             if (field.getState() == GameState.FAILED && userController.isLogged()){
                 scoreService.addScore(new Score(userController.getLoggedUser().getLogin(),GAME_NAME, field.getScore(), new Date()));
             }
+            getFailedGame();
             scoreModel(model);
             commentModel(model);
-            //ratingModel(model);
         }
         else {
             scoreModel(model);
             commentModel(model);
-            //ratingModel(model);
         }
         return "breakingBricks";
     }
@@ -86,6 +85,20 @@ public class BreakingBricksController {
 
     public int getLifeCount(){
         return field.getLifeCount();
+    }
+
+    public boolean getFailedGame(){
+        if (field.getState()==GameState.FAILED){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public String getGif(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("<img src='/images/giph.gif'>");
+        return sb.toString();
     }
 
     public String getHtmlField() {
@@ -129,9 +142,4 @@ public class BreakingBricksController {
         return ratingService.getAverageRating(GAME_NAME);
     }
 
-    /*
-    private void ratingModel(Model model) {
-        model.addAttribute("rating", ratingService.getAverageRating(GAME_NAME));
-    }
-    */
 }
