@@ -1,6 +1,8 @@
 # Bricks Breaking Game
 Welcome to the Bricks Breaking game! This project is a Java-based implementation of the classic Bricks Breaking game. The game challenges players to strategically clear a grid of bricks by breaking groups of adjacent bricks of the same color.
 
+![breakingBricks](https://github.com/JanPeregrim/Breaking_Bricks/assets/130740859/dbe187f3-1c7b-4620-a20d-f728b58a00ee)
+
 # Table of Contents
 - Project Overview
 - Project Structure
